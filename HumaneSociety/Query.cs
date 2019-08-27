@@ -181,40 +181,26 @@ namespace HumaneSociety
                     Console.WriteLine(employeeInfo);
                     break;
                 case "update":
+                    Employee searchEmployee = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).Single();
                     Console.WriteLine("What information would you like to change?\n1. First Name\n2. Last Name\n3. Email");
                     switch(Console.ReadLine())
                     {
                         case "1":
                             Console.WriteLine("What is this employees first name?");
                             string givenFirstName = Console.ReadLine();
-                            Employee newFirstName = db.Employees
-                                .Where( e => e.EmployeeId == employee.EmployeeId)
-                                .Single();
-
-
-                            newFirstName.FirstName = givenFirstName;
+                            searchEmployee.FirstName = givenFirstName;
                             db.SubmitChanges();
-                                break;
+                            break;
                         case "2":
                             Console.WriteLine("What is this employees last name?");
                             string givenLastName = Console.ReadLine();
-                            Employee newLastName = db.Employees
-                                .Where(e => e.EmployeeId == employee.EmployeeId)
-                                .Single();
-
-
-                            newLastName.LastName = givenLastName;
+                            searchEmployee.LastName = givenLastName;
                             db.SubmitChanges();
                             break;
                         case "3":
                             Console.WriteLine("What is this employees email address?");
                             string givenEmail = Console.ReadLine();
-                            Employee newEmail = db.Employees
-                                .Where(e => e.EmployeeId == employee.EmployeeId)
-                                .Single();
-
-
-                            newEmail.Email = givenEmail;
+                            searchEmployee.Email = givenEmail;
                             db.SubmitChanges();
                             break;
                     }
@@ -228,10 +214,6 @@ namespace HumaneSociety
                     RunEmployeeQueries(employee, crudOperation);
                     break;
             }
-            Console.WriteLine("Please select an employee username");
-            employee.UserName = Console.ReadLine();
-
-            throw new NotImplementedException();
         }
 
         // TODO: Animal CRUD Operations
@@ -243,18 +225,105 @@ namespace HumaneSociety
 
         internal static Animal GetAnimalByID(int id)
         {
-            Animal searchAnimal = db.Animals.Where(a => a.AnimalId == id).Single().Select(a => a);
-            
+            Animal searchAnimal = db.Animals.Where(a => a.AnimalId == id).Single();
+            return searchAnimal;          
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
-        {            
-            throw new NotImplementedException();
+        {
+            Animal searchAnimal = db.Animals.Where(a => a.AnimalId == animalId).Single();
+            Console.WriteLine("What would you like to update?\n1. Name\n2. Weight\n3. Age\n4. Demeanor\n5. Kid Friendly\n6. Pet Friendly\n7. Gender\n8. AdoptionStatus\n9. CategoryID\n10. Diet Plan ID\n11. EmployeeID");
+            switch(Console.ReadLine())
+            {
+                case "1":
+                    Console.WriteLine("What is this animals name?");
+                    string givenName = Console.ReadLine();
+                    searchAnimal.Name = givenName;
+                    db.SubmitChanges();
+                    break;
+                case "2":
+                    Console.WriteLine("What is this animals weight?");
+                    int givenWeight = int.Parse(Console.ReadLine());
+                    searchAnimal.Weight = givenWeight;
+                    db.SubmitChanges();
+                    break;
+                case "3":
+                    Console.WriteLine("What is this animals age?");
+                    int givenAge = int.Parse(Console.ReadLine());
+                    searchAnimal.Age = givenAge;
+                    db.SubmitChanges();
+                    break;
+                case "4":
+                    Console.WriteLine("What is this animals demeanor?");
+                    string givenDemeanor = Console.ReadLine();
+                    searchAnimal.Demeanor = givenDemeanor;
+                    db.SubmitChanges();
+                    break;
+                case "5":
+                    if (searchAnimal.KidFriendly = true)
+                    {
+                        Console.WriteLine("This animal was listed as kid friendly and is now listead as NOT kid friendly.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("This animal was listed as NOT kid friendly and is now kid friendly.");
+                    }
+                    searchAnimal.KidFriendly = !searchAnimal.KidFriendly;
+                    db.SubmitChanges();
+                    break;
+                case "6":
+                    if (searchAnimal.PetFriendly = true)
+                    {
+                        Console.WriteLine("This animal was listed as pet friendly and is now listead as NOT pet friendly.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("This animal was listed as NOT pet friendly and is now pet friendly.");
+                    }
+                    searchAnimal.PetFriendly = !searchAnimal.PetFriendly;
+                    db.SubmitChanges();
+                    break;
+                case "7":
+                    Console.WriteLine("What is this animals gender?");
+                    string givenGender = Console.ReadLine();
+                    searchAnimal.Gender = givenGender;
+                    db.SubmitChanges();
+                    break;
+                case "8":
+                    Console.WriteLine("What is this animals adoption status?");
+                    string givenStatus = Console.ReadLine();
+                    searchAnimal.AdoptionStatus = givenStatus;
+                    db.SubmitChanges();
+                    break;
+                case "9":
+                    Console.WriteLine("What is this animals category ID?");
+                    int givenCategoryId = int.Parse(Console.ReadLine());
+                    searchAnimal.CategoryId = givenCategoryId;
+                    db.SubmitChanges();
+                    break;
+                case "10":
+                    Console.WriteLine("What is this animals Diet Plan ID?");
+                    int givenDietId = int.Parse(Console.ReadLine());
+                    searchAnimal.DietPlanId = givenDietId;
+                    db.SubmitChanges();
+                    break;
+                case "11":
+                    Console.WriteLine("What is this animals primary care employee ID?");
+                    int givenEmployeeId = int.Parse(Console.ReadLine());
+                    searchAnimal.EmployeeId = givenEmployeeId;
+                    db.SubmitChanges();
+                    break;
+                default:
+                    Console.WriteLine("Please enter a valid option.");
+                    UpdateAnimal(animalId, updates);
+                    break;
+            }
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            db.Animals.DeleteOnSubmit(animal);
+            db.SubmitChanges();
         }
         
         // TODO: Animal Multi-Trait Search
