@@ -330,3 +330,5 @@ ASALocalRun/
 .mfractor/
 
 App.config
+HumaneSociety/Properties/Settings.settings
+HumaneSociety/Properties/Settings.Designer.cs
