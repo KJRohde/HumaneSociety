@@ -327,7 +327,7 @@ namespace HumaneSociety
         }
         
         // TODO: Animal Multi-Trait Search
-        //Com
+        //Completed. All meta data the instructors helped with deleted due to having to reclone repo 
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
             IQueryable<Animal> queryAnimals = db.Animals;
@@ -359,7 +359,7 @@ namespace HumaneSociety
                 }
             }
             return queryAnimals;
-            //POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP
+           
         }
 
         // TODO: Misc Animal Things
@@ -401,14 +401,16 @@ namespace HumaneSociety
         }
 
         // TODO: Shots Stuff
+        //Iqueryable named giveAnimalShots
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            IQueryable<AnimalShot> giveAnimalShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId);
+            return giveAnimalShot;
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            throw new NotImplementedException();
+          
         }
     }
 }
