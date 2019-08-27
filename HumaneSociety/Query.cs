@@ -164,20 +164,87 @@ namespace HumaneSociety
         //// TODO Items: ////
         
         // TODO: Allow any of the CRUD operations to occur here
+        // switch case to decide which operation to do
+        // create: userEmployee.CreateNewEmployee
+        // update: userEmployee.UpdateEmployeeInfo
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
+            Console.WriteLine("Would you like to:\n1. Create a new employee\n2. Read employee info\n3. Update employee info\n4. Remove and employee from the database");
+            switch (crudOperation)
+            {
+                case "create":
+                    db.Employees.InsertOnSubmit(employee);
+                    db.SubmitChanges();
+                    break;
+                case "read":
+                    var employeeInfo = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).Select(e => e);
+                    Console.WriteLine(employeeInfo);
+                    break;
+                case "update":
+                    Console.WriteLine("What information would you like to change?\n1. First Name\n2. Last Name\n3. Email");
+                    switch(Console.ReadLine())
+                    {
+                        case "1":
+                            Console.WriteLine("What is this employees first name?");
+                            string givenFirstName = Console.ReadLine();
+                            Employee newFirstName = db.Employees
+                                .Where( e => e.EmployeeId == employee.EmployeeId)
+                                .Single();
+
+
+                            newFirstName.FirstName = givenFirstName;
+                            db.SubmitChanges();
+                                break;
+                        case "2":
+                            Console.WriteLine("What is this employees last name?");
+                            string givenLastName = Console.ReadLine();
+                            Employee newLastName = db.Employees
+                                .Where(e => e.EmployeeId == employee.EmployeeId)
+                                .Single();
+
+
+                            newLastName.LastName = givenLastName;
+                            db.SubmitChanges();
+                            break;
+                        case "3":
+                            Console.WriteLine("What is this employees email address?");
+                            string givenEmail = Console.ReadLine();
+                            Employee newEmail = db.Employees
+                                .Where(e => e.EmployeeId == employee.EmployeeId)
+                                .Single();
+
+
+                            newEmail.Email = givenEmail;
+                            db.SubmitChanges();
+                            break;
+                    }
+                    break;
+                case "delete":
+                    db.Employees.DeleteOnSubmit(employee);
+                    db.SubmitChanges();
+                    break;
+                default:
+                    Console.WriteLine("Please choose a valid option.");
+                    RunEmployeeQueries(employee, crudOperation);
+                    break;
+            }
+            Console.WriteLine("Please select an employee username");
+            employee.UserName = Console.ReadLine();
+
             throw new NotImplementedException();
         }
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            throw new NotImplementedException();
+            db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();
         }
 
         internal static Animal GetAnimalByID(int id)
         {
-            throw new NotImplementedException();
+            Animal searchAnimal = db.Animals.Where(a => a.AnimalId == id).Single().Select(a => a);
+            
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
