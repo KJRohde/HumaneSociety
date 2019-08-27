@@ -335,7 +335,7 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            throw new NotImplementedException();
+            
         }
         
         internal static Room GetRoom(int animalId)
