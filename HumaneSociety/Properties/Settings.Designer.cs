@@ -33,5 +33,15 @@ namespace HumaneSociety.Properties {
                 return ((string)(this["HumaneSocietyConnectionString3"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("y")]
+        public string hngmh {
+            get {
+                return ((string)(this["hngmh"]));
+            }
+        }
     }
 }
