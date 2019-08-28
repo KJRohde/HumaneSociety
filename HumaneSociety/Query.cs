@@ -176,45 +176,26 @@ namespace HumaneSociety
                     db.SubmitChanges();
                     break;
                 case "read":
-                    //Write a line similar to DisplayAnimalInfo
-                    UserInterface.DisplayEmployeeInfo(employee);
+                    var employeeToRead = db.Employees.FirstOrDefault(e => e.EmployeeNumber == employee.EmployeeNumber);
+                    List<string> info = new List<string>() { "Employee Number: " + employeeToRead.EmployeeNumber, "Name: " + employeeToRead.FirstName + " " + employeeToRead.LastName, "Email: " + employeeToRead.Email };
+                    UserInterface.DisplayUserOptions(info);
+                    Console.ReadLine();
                     break;
                 case "update":
-                    Console.WriteLine("What information would you like to change?\n1. First Name\n2. Last Name\n3. Email");
-                    string input = Console.ReadLine();
-                    GetUpdateChanges(employee, input);
+                    var employeeToUpdate = db.Employees.FirstOrDefault(e => e.EmployeeNumber == employee.EmployeeNumber);
+                    employeeToUpdate.FirstName = employee.FirstName;
+                    employeeToUpdate.LastName = employee.LastName;
+                    employeeToUpdate.Email = employee.Email;
+                    db.SubmitChanges();
                     break;
                 case "delete":
-                    db.Employees.DeleteOnSubmit(employee);
+                    var employeeToDelete = db.Employees.FirstOrDefault(e => e.EmployeeNumber == employee.EmployeeNumber && e.LastName == employee.LastName);
+                    db.Employees.DeleteOnSubmit(employeeToDelete);
                     db.SubmitChanges();
                     break;
                 default:
                     Console.WriteLine("Please choose a valid option.");
                     RunEmployeeQueries(employee, crudOperation);
-                    break;
-            }
-        }
-        internal static void GetUpdateChanges(Employee employee, string input)
-        {
-            switch (input)
-            {
-                case "1":
-                    Console.WriteLine("What is this employees first name?");
-                    string givenFirstName = Console.ReadLine();
-                    employee.FirstName = givenFirstName;
-                    db.SubmitChanges();
-                    break;
-                case "2":
-                    Console.WriteLine("What is this employees last name?");
-                    string givenLastName = Console.ReadLine();
-                    employee.LastName = givenLastName;
-                    db.SubmitChanges();
-                    break;
-                case "3":
-                    Console.WriteLine("What is this employees email address?");
-                    string givenEmail = Console.ReadLine();
-                    employee.Email = givenEmail;
-                    db.SubmitChanges();
                     break;
             }
         }
