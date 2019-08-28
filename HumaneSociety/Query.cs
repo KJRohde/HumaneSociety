@@ -169,7 +169,6 @@ namespace HumaneSociety
         // update: userEmployee.UpdateEmployeeInfo
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            Console.WriteLine("Would you like to:\n1. Create a new employee\n2. Read employee info\n3. Update employee info\n4. Remove and employee from the database");
             switch (crudOperation)
             {
                 case "create":
@@ -177,33 +176,13 @@ namespace HumaneSociety
                     db.SubmitChanges();
                     break;
                 case "read":
-                    var employeeInfo = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).Select(e => e);
-                    Console.WriteLine(employeeInfo);
+                    //Write a line similar to DisplayAnimalInfo
+                    UserInterface.DisplayEmployeeInfo(employee);
                     break;
                 case "update":
-                    Employee searchEmployee = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).Single();
                     Console.WriteLine("What information would you like to change?\n1. First Name\n2. Last Name\n3. Email");
-                    switch(Console.ReadLine())
-                    {
-                        case "1":
-                            Console.WriteLine("What is this employees first name?");
-                            string givenFirstName = Console.ReadLine();
-                            searchEmployee.FirstName = givenFirstName;
-                            db.SubmitChanges();
-                            break;
-                        case "2":
-                            Console.WriteLine("What is this employees last name?");
-                            string givenLastName = Console.ReadLine();
-                            searchEmployee.LastName = givenLastName;
-                            db.SubmitChanges();
-                            break;
-                        case "3":
-                            Console.WriteLine("What is this employees email address?");
-                            string givenEmail = Console.ReadLine();
-                            searchEmployee.Email = givenEmail;
-                            db.SubmitChanges();
-                            break;
-                    }
+                    string input = Console.ReadLine();
+                    GetUpdateChanges(employee, input);
                     break;
                 case "delete":
                     db.Employees.DeleteOnSubmit(employee);
@@ -215,7 +194,30 @@ namespace HumaneSociety
                     break;
             }
         }
-
+        internal static void GetUpdateChanges(Employee employee, string input)
+        {
+            switch (input)
+            {
+                case "1":
+                    Console.WriteLine("What is this employees first name?");
+                    string givenFirstName = Console.ReadLine();
+                    employee.FirstName = givenFirstName;
+                    db.SubmitChanges();
+                    break;
+                case "2":
+                    Console.WriteLine("What is this employees last name?");
+                    string givenLastName = Console.ReadLine();
+                    employee.LastName = givenLastName;
+                    db.SubmitChanges();
+                    break;
+                case "3":
+                    Console.WriteLine("What is this employees email address?");
+                    string givenEmail = Console.ReadLine();
+                    employee.Email = givenEmail;
+                    db.SubmitChanges();
+                    break;
+            }
+        }
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
@@ -232,94 +234,57 @@ namespace HumaneSociety
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
             Animal searchAnimal = db.Animals.Where(a => a.AnimalId == animalId).Single();
-            Console.WriteLine("What would you like to update?\n1. Name\n2. Weight\n3. Age\n4. Demeanor\n5. Kid Friendly\n6. Pet Friendly\n7. Gender\n8. AdoptionStatus\n9. CategoryID\n10. Diet Plan ID\n11. EmployeeID");
-            switch(Console.ReadLine())
+            foreach(KeyValuePair<int, string> el in updates)
             {
-                case "1":
-                    Console.WriteLine("What is this animals name?");
-                    string givenName = Console.ReadLine();
-                    searchAnimal.Name = givenName;
-                    db.SubmitChanges();
-                    break;
-                case "2":
-                    Console.WriteLine("What is this animals weight?");
-                    int givenWeight = int.Parse(Console.ReadLine());
-                    searchAnimal.Weight = givenWeight;
-                    db.SubmitChanges();
-                    break;
-                case "3":
-                    Console.WriteLine("What is this animals age?");
-                    int givenAge = int.Parse(Console.ReadLine());
-                    searchAnimal.Age = givenAge;
-                    db.SubmitChanges();
-                    break;
-                case "4":
-                    Console.WriteLine("What is this animals demeanor?");
-                    string givenDemeanor = Console.ReadLine();
-                    searchAnimal.Demeanor = givenDemeanor;
-                    db.SubmitChanges();
-                    break;
-                case "5":
-                    if (searchAnimal.KidFriendly = true)
-                    {
-                        Console.WriteLine("This animal was listed as kid friendly and is now listead as NOT kid friendly.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("This animal was listed as NOT kid friendly and is now kid friendly.");
-                    }
-                    searchAnimal.KidFriendly = !searchAnimal.KidFriendly;
-                    db.SubmitChanges();
-                    break;
-                case "6":
-                    if (searchAnimal.PetFriendly = true)
-                    {
-                        Console.WriteLine("This animal was listed as pet friendly and is now listead as NOT pet friendly.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("This animal was listed as NOT pet friendly and is now pet friendly.");
-                    }
-                    searchAnimal.PetFriendly = !searchAnimal.PetFriendly;
-                    db.SubmitChanges();
-                    break;
-                case "7":
-                    Console.WriteLine("What is this animals gender?");
-                    string givenGender = Console.ReadLine();
-                    searchAnimal.Gender = givenGender;
-                    db.SubmitChanges();
-                    break;
-                case "8":
-                    Console.WriteLine("What is this animals adoption status?");
-                    string givenStatus = Console.ReadLine();
-                    searchAnimal.AdoptionStatus = givenStatus;
-                    db.SubmitChanges();
-                    break;
-                case "9":
-                    Console.WriteLine("What is this animals category ID?");
-                    int givenCategoryId = int.Parse(Console.ReadLine());
-                    searchAnimal.CategoryId = givenCategoryId;
-                    db.SubmitChanges();
-                    break;
-                case "10":
-                    Console.WriteLine("What is this animals Diet Plan ID?");
-                    int givenDietId = int.Parse(Console.ReadLine());
-                    searchAnimal.DietPlanId = givenDietId;
-                    db.SubmitChanges();
-                    break;
-                case "11":
-                    Console.WriteLine("What is this animals primary care employee ID?");
-                    int givenEmployeeId = int.Parse(Console.ReadLine());
-                    searchAnimal.EmployeeId = givenEmployeeId;
-                    db.SubmitChanges();
-                    break;
-                default:
-                    Console.WriteLine("Please enter a valid option.");
-                    UpdateAnimal(animalId, updates);
-                    break;
+                GetAnimalUpdates(searchAnimal, updates);
             }
         }
+        internal static void GetAnimalUpdates(Animal animal, Dictionary<int, string> updates)
+        {
+            foreach (KeyValuePair<int, string> el in updates)
+                switch (el.Key)
+            {
+                    case 1:
+                        animal.CategoryId = int.Parse(el.Value);
+                        break;
+                    case 2:
+                        animal.Name = el.Value;
+                        break;
+                    case 3:
+                        animal.Age = int.Parse(el.Value);
+                        break;
+                    case 4:
+                        animal.Demeanor = el.Value;
+                        break;
+                    case 5:
+                        if (el.Value == "yes" || el.Value == "y")
+                        {
+                            animal.KidFriendly = true;
+                        }
+                        else
+                        {
+                            animal.KidFriendly = false;
+                        }
+                        break;
+                    case 6:
+                        if (el.Value == "yes" ||  el.Value == "y")
+                        {
+                            animal.PetFriendly = true;
+                        }
+                        else
+                        {
+                            animal.PetFriendly = false;
+                        }
+                        break;
+                    case 7:
+                        animal.Weight = int.Parse(el.Value);
+                        break;
+                    case 8:
+                        animal.AnimalId = int.Parse(el.Value);
+                        break;
 
+                }
+        }
         internal static void RemoveAnimal(Animal animal)
         {
             db.Animals.DeleteOnSubmit(animal);
@@ -359,45 +324,83 @@ namespace HumaneSociety
                 }
             }
             return queryAnimals;
-            //POOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOP
         }
 
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
+            //Make switch case of animal species with number values as returns
         {
-            Category searchCategory = db.Categories.Where(c => c.Name == categoryName).Single();
-
+            switch (categoryName)
+            {
+                case "beagle":
+                    return 1;
+                case "weenie":
+                    return 2;
+                case "poodle":
+                    return 3;
+                case "dalmation":
+                    return 4;
+                default:
+                    Console.WriteLine("That is not a valid category");
+                    return 0;
+            }
         }
-        
         internal static Room GetRoom(int animalId)
         {
-            throw new NotImplementedException();
+            Room searchRoom = db.Rooms.Where(r => r.AnimalId == animalId).Single();
+            return searchRoom;
         }
         
         internal static int GetDietPlanId(string dietPlanName)
+                //make switch case of possible food plans with number values as returns
         {
-            throw new NotImplementedException();
-        }
+                switch (dietPlanName)
+                {
+                    case "big dog":
+                        return 1;
+                    case "small dog":
+                        return 2;
+                    case "medium dog":
+                        return 3;
+                    default:
+                        Console.WriteLine("That is not a valid food plan");
+                        return 0;
+                }
+            }
 
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            throw new NotImplementedException();
+            Adoption adoption = new Adoption();
+            adoption.AnimalId = animal.AnimalId;
+            adoption.ClientId = client.ClientId;
+            adoption.ApprovalStatus = "pending";
+            adoption.AdoptionFee = 75;
+            adoption.PaymentCollected = null;
+                db.Adoptions.InsertOnSubmit(adoption);
+
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            throw new NotImplementedException();
+            IQueryable<Adoption> pendingAdoptions = db.Adoptions.Where(a => a.ApprovalStatus == "pending").OrderBy(a => a.ClientId);
+            return pendingAdoptions;
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            throw new NotImplementedException();
+            if (isAdopted == true)
+                adoption.ApprovalStatus = "approved";
+            else
+                adoption.ApprovalStatus = "denied";
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-            throw new NotImplementedException();
+            Adoption searchAdoption = db.Adoptions.Where(a => a.AnimalId == animalId && a.ClientId == clientId).Single();
+            db.Adoptions.DeleteOnSubmit(searchAdoption);
+            db.SubmitChanges();
+
         }
 
         // TODO: Shots Stuff
