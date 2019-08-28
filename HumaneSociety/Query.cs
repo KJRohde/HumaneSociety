@@ -328,33 +328,35 @@ namespace HumaneSociety
         
         // TODO: Animal Multi-Trait Search
         //Completed. All meta data the instructors helped with deleted due to having to reclone repo 
+        
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
             IQueryable<Animal> queryAnimals = db.Animals;
+
             foreach (KeyValuePair<int, string> update in updates)
             {
                 switch (update.Key)
                 {
                     case 1:
-                        queryAnimals = queryAnimals.Where(a => a.CategoryId == int.Parse(update.Value));
+                        queryAnimals = queryAnimals.Where(q => q.CategoryId == int.Parse(update.Value));
                         break;
                     case 2:
-                        queryAnimals = queryAnimals.Where(a => a.Name == update.Value);
+                        queryAnimals = queryAnimals.Where(q => q.Name == update.Value);
                         break;
                     case 3:
-                        queryAnimals = queryAnimals.Where(a => a.Age == int.Parse(update.Value));
+                        queryAnimals = queryAnimals.Where(q => q.Age == int.Parse(update.Value));
                         break;
                     case 4:
-                        queryAnimals = queryAnimals.Where(a => a.Demeanor == update.Value);
+                        queryAnimals = queryAnimals.Where(q => q.Demeanor == update.Value);
                         break;
                     case 5:
-                        queryAnimals = queryAnimals.Where(a => a.KidFriendly == bool.Parse(update.Value));
+                        queryAnimals = queryAnimals.Where(q => q.KidFriendly == bool.Parse(update.Value));
                         break;
                     case 6:
-                        queryAnimals = queryAnimals.Where(a => a.PetFriendly == bool.Parse(update.Value));
+                        queryAnimals = queryAnimals.Where(q => q.PetFriendly == bool.Parse(update.Value));
                         break;
                     case 7:
-                        queryAnimals = queryAnimals.Where(a => a.Weight == int.Parse(update.Value));
+                        queryAnimals = queryAnimals.Where(q => q.Weight == int.Parse(update.Value));
                         break;
                 }
             }
@@ -408,9 +410,27 @@ namespace HumaneSociety
             return giveAnimalShot;
         }
 
+
+        //DB Info--> Shots (ShotId INTEGER IDENTITY (1,1) PRIMARY KEY, Name VARCHAR(50));
+        //// Add the new object to the Orders collection --->  db.Orders.InsertOnSubmit(ord);
+        //The added entity will not appear in query results until after "SubmitChanges" has been called.
         internal static void UpdateShot(string shotName, Animal animal)
         {
-          
+            AnimalShot newShot = new AnimalShot();
+            newShot.AnimalId = animal.AnimalId;
+
+            var shotGiven = db.Shots.Where(s => s.Name == shotName).Single();
+
+
+            newShot.ShotId = shotGiven.ShotId;
+            newShot.DateReceived = DateTime.Today;
+            db.AnimalShots.Where(c => c.AnimalId == shotGiven.ShotId);
+
+
+            db.AnimalShots.InsertOnSubmit(newShot);
+            db.SubmitChanges();
         }
+
+    }
     }
 }
