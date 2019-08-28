@@ -221,8 +221,8 @@ namespace HumaneSociety
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            db.Animals.InsertOnSubmit(animal);
-            db.SubmitChanges();
+                db.Animals.InsertOnSubmit(animal);
+                db.SubmitChanges();
         }
 
         internal static Animal GetAnimalByID(int id)
@@ -245,7 +245,7 @@ namespace HumaneSociety
                 switch (el.Key)
             {
                     case 1:
-                        animal.CategoryId = int.Parse(el.Value);
+                        animal.CategoryId = GetCategoryId(el.Value);
                         break;
                     case 2:
                         animal.Name = el.Value;
@@ -290,9 +290,9 @@ namespace HumaneSociety
             db.Animals.DeleteOnSubmit(animal);
             db.SubmitChanges();
         }
+        //Completed. All meta data the instructors helped with deleted due to having to reclone repo 
         
         // TODO: Animal Multi-Trait Search
-        //Completed. All meta data the instructors helped with deleted due to having to reclone repo 
         
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
@@ -303,7 +303,7 @@ namespace HumaneSociety
                 switch (update.Key)
                 {
                     case 1:
-                        queryAnimals = queryAnimals.Where(q => q.CategoryId == int.Parse(update.Value));
+                        queryAnimals = queryAnimals.Where(q => q.CategoryId == GetCategoryId(update.Value));
                         break;
                     case 2:
                         queryAnimals = queryAnimals.Where(q => q.Name == update.Value);
@@ -336,7 +336,7 @@ namespace HumaneSociety
         }
         internal static Room GetRoom(int animalId)
         {
-            Room searchRoom = db.Rooms.Where(r => r.AnimalId == animalId).Single();
+            Room searchRoom = db.Rooms.Where(r => r.AnimalId == animalId).FirstOrDefault();
             return searchRoom;
         }
         
@@ -354,9 +354,10 @@ namespace HumaneSociety
             adoption.ClientId = client.ClientId;
             adoption.ApprovalStatus = "pending";
             adoption.AdoptionFee = 75;
-            adoption.PaymentCollected = null;
+            adoption.PaymentCollected = false;
+            animal.AdoptionStatus = "pending";
                 db.Adoptions.InsertOnSubmit(adoption);
-
+            db.SubmitChanges();
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
@@ -368,9 +369,14 @@ namespace HumaneSociety
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
             if (isAdopted == true)
+            {
                 adoption.ApprovalStatus = "approved";
+            }
             else
+            {
                 adoption.ApprovalStatus = "denied";
+            }
+            db.SubmitChanges();
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
@@ -402,7 +408,7 @@ namespace HumaneSociety
 
 
             newShot.ShotId = shotGiven.ShotId;
-            newShot.DateReceived = DateTime.Today;
+            newShot.DateReceived = DateTime.Now;
             db.AnimalShots.Where(c => c.AnimalId == shotGiven.ShotId);
 
 

@@ -46,3 +46,12 @@ INSERT INTO HumaneSociety.dbo.Addresses VALUES ('6846 Elm St', 'Minneapolis', 23
 INSERT INTO HumaneSociety.dbo.Addresses VALUES ('7233 Killu Dr', 'New York', 32, 29435)
 INSERT INTO HumaneSociety.dbo.Addresses VALUES ('4045 N 163rd St', 'Brookfield', 49, 53005)
 INSERT INTO HumaneSociety.dbo.Addresses VALUES ('3456 North Ave', 'Anchorage', 2, 76264)
+3 Adoptions
+INSERT INTO HumaneSociety.dbo.Adoptions VALUES (1, 13, 'pending', 75, 0)
+INSERT INTO HumaneSociety.dbo.Adoptions VALUES (2, 14, 'pending', 75, 0)
+INSERT INTO HumaneSociety.dbo.Adoptions VALUES (3, 17, 'pending', 75, 0)
+4 Shots
+INSERT INTO HumaneSociety.dbo.Shots VALUES ('Fireball')
+INSERT INTO HumaneSociety.dbo.Shots VALUES ('Jaeger')
+INSERT INTO HumaneSociety.dbo.Shots VALUES ('Hennessy')
+INSERT INTO HumaneSociety.dbo.Shots VALUES ('Jack')
