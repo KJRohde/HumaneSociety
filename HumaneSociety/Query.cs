@@ -330,22 +330,9 @@ namespace HumaneSociety
 
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
-            //Make switch case of animal species with number values as returns
         {
-            switch (categoryName)
-            {
-                case "beagle":
-                    return 1;
-                case "weenie":
-                    return 2;
-                case "poodle":
-                    return 3;
-                case "dalmation":
-                    return 4;
-                default:
-                    Console.WriteLine("That is not a valid category");
-                    return 0;
-            }
+            var categoryId = db.Categories.Where(c => c.Name == categoryName).Select(c => c.CategoryId).Single();
+            return categoryId;
         }
         internal static Room GetRoom(int animalId)
         {
@@ -354,21 +341,10 @@ namespace HumaneSociety
         }
         
         internal static int GetDietPlanId(string dietPlanName)
-                //make switch case of possible food plans with number values as returns
         {
-                switch (dietPlanName)
-                {
-                    case "big dog":
-                        return 1;
-                    case "small dog":
-                        return 2;
-                    case "medium dog":
-                        return 3;
-                    default:
-                        Console.WriteLine("That is not a valid food plan");
-                        return 0;
-                }
-            }
+            var dietPlanId = db.DietPlans.Where(d => d.Name == dietPlanName).Select(c => c.DietPlanId).Single();
+            return dietPlanId;
+        }
 
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
